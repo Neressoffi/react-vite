@@ -3,7 +3,7 @@ import Button from './Button'
 
 const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400'
 
-function ProductCard({ product, onAddToCart, onTagClick, onRemoveFromCart }) {
+function ProductCard({ product, onAddToCart, onTagClick, onRemoveFromCart, onOpenDetail }) {
   const [imgError, setImgError] = useState(false)
   const imgSrc = imgError ? FALLBACK_IMAGE : product.image
 
@@ -34,6 +34,9 @@ function ProductCard({ product, onAddToCart, onTagClick, onRemoveFromCart }) {
           </div>
         )}
         <div className="mt-auto d-flex flex-column gap-2">
+          <Button variant="outline-secondary" onClick={() => onOpenDetail && onOpenDetail(product)}>
+            Voir le détail
+          </Button>
           <Button onClick={() => onAddToCart(product)}>
             Ajouter au panier
           </Button>

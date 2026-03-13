@@ -6,6 +6,7 @@ import Footer from './components/Footer'
 import Sidebar from './components/Sidebar'
 import ProductCard from './components/ProductCard'
 import Cart from './components/Cart'
+import ProductDetail from './components/ProductDetail'
 import './App.css'
 
 const cartInitialState = []
@@ -34,6 +35,9 @@ function cartReducer(state, action) {
       item.id === action.id ? { ...item, quantity: action.quantity } : item,
     )
   }
+  if (action.type === 'CLEAR') {
+    return cartInitialState
+  }
   return state
 }
 
@@ -44,6 +48,7 @@ function App() {
   const [maxPrice, setMaxPrice] = useState('')
   const [selectedTags, setSelectedTags] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
+  const [selectedProduct, setSelectedProduct] = useState(null)
 
   const addToCart = (product) => {
     dispatchCart({ type: 'ADD', product })
@@ -91,6 +96,21 @@ function App() {
     }
   }
 
+  const openProductDetail = (product) => {
+    setSelectedProduct(product)
+  }
+
+  const closeProductDetail = () => {
+    setSelectedProduct(null)
+  }
+
+  const checkout = () => {
+    if (cartItems.length === 0) return
+    dispatchCart({ type: 'CLEAR' })
+    setCartOpen(false)
+    window.alert('Merci pour votre commande !')
+  }
+
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0)
 
   return (
@@ -118,6 +138,7 @@ function App() {
                     onAddToCart={addToCart}
                     onTagClick={toggleTag}
                     onRemoveFromCart={handleRemoveFromProduct}
+                    onOpenDetail={openProductDetail}
                   />
                 </div>
               ))}
@@ -146,6 +167,12 @@ function App() {
         items={cartItems}
         onRemove={removeFromCart}
         onUpdateQty={updateCartQty}
+        onCheckout={checkout}
+      />
+      <ProductDetail
+        product={selectedProduct}
+        onClose={closeProductDetail}
+        onAddToCart={addToCart}
       />
     </div>
   )

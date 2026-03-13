@@ -1,6 +1,6 @@
 import Button from './Button'
 
-function Cart({ isOpen, onClose, items, onRemove, onUpdateQty }) {
+function Cart({ isOpen, onClose, items, onRemove, onUpdateQty, onCheckout }) {
   if (!isOpen) return null
 
   const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0)
@@ -53,7 +53,9 @@ function Cart({ isOpen, onClose, items, onRemove, onUpdateQty }) {
               ))}
             </ul>
             <p className="fw-bold mt-3 mb-2">Total : {total.toFixed(2)} €</p>
-            <Button className="w-100">Commander</Button>
+            <Button className="w-100" onClick={onCheckout}>
+              Commander
+            </Button>
           </>
         )}
       </div>
